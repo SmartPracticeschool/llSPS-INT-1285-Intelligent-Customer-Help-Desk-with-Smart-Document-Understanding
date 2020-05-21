@@ -1,0 +1,436 @@
+{
+  "intents": [
+    {
+      "intent": "greeting",
+      "examples": [
+        {
+          "text": "Good Morning"
+        },
+        {
+          "text": "Hi"
+        },
+        {
+          "text": "Hello"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "thanks",
+      "examples": [
+        {
+          "text": "Thank you"
+        },
+        {
+          "text": "gracias"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "warranty",
+      "examples": [
+        {
+          "text": "What part of device are included in warranty?"
+        },
+        {
+          "text": "What parts does warranty cover?"
+        },
+        {
+          "text": "What is warranty period?"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "operation_issue",
+      "examples": [
+        {
+          "text": "My device is not turning on"
+        },
+        {
+          "text": "My device is not operating properly"
+        },
+        {
+          "text": "Device is making unfamiliar noise"
+        },
+        {
+          "text": "How to use this device"
+        }
+      ],
+      "description": "The queries related to device operation"
+    }
+  ],
+  "entities": [
+    {
+      "entity": "device_not_turning_on",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "starting",
+          "synonyms": [
+            "start",
+            "commence",
+            "launching",
+            "initiate",
+            "booting",
+            "turning on"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "device_not_functioning",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "malfunctioning",
+          "synonyms": [
+            "faulty",
+            "defective",
+            "malfunctioned",
+            "nonfunctioning",
+            "inoperable",
+            "damaged",
+            "overheating",
+            "leaky",
+            "leaking",
+            "dysfunction"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "warranty_time_period",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "time",
+          "synonyms": [
+            "period",
+            "duration"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "warranty_parts",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "parts",
+          "synonyms": [
+            "components",
+            "items",
+            "sections",
+            "pieces",
+            "segments",
+            "portions"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "device_making_noise",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "noise",
+          "synonyms": [
+            "noises",
+            "noisy",
+            "distortion",
+            "fuss",
+            "thud"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    },
+    "from-sample": true
+  },
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "title": "warrant_period",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          },
+          {
+            "values": [
+              {
+                "text": "The device will be in the warranty period for the 1 year from the purchase date mentioned in your bill"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1590001863805",
+      "conditions": "@warranty_time_period",
+      "dialog_node": "node_4_1590002058574",
+      "previous_sibling": "node_1_1590001952939"
+    },
+    {
+      "type": "standard",
+      "title": "warranty_coverage",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          },
+          {
+            "values": [
+              {
+                "text": "All the software related issues and manufacturing defects are covered in warranty, any damage to the body of the device is not covered in the warranty."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1590001863805",
+      "conditions": "@warranty_parts",
+      "dialog_node": "node_1_1590001952939"
+    },
+    {
+      "type": "standard",
+      "title": "device_not_functioning",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          },
+          {
+            "values": [
+              {
+                "text": "Your device configurations might needed to be set up properly. You will be mailed the configuration file through your mail."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1590001206458",
+      "conditions": "@device_not_functioning",
+      "dialog_node": "node_7_1590001781790",
+      "previous_sibling": "node_7_1590001548712"
+    },
+    {
+      "type": "standard",
+      "title": "device_making_noise",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          },
+          {
+            "values": [
+              {
+                "text": "There might be some hardware damage to the device. An engineer will be sent to check your device."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1590001206458",
+      "conditions": "@device_making_noise",
+      "dialog_node": "node_7_1590001548712",
+      "previous_sibling": "node_10_1590001260467"
+    },
+    {
+      "type": "standard",
+      "title": "Device not turning on",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          },
+          {
+            "values": [
+              {
+                "text": "Make sure device is connected to the power supply properly and set up according to the user manual. If the problem persists contact again and you will be connected with the human representative."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1590001206458",
+      "conditions": "@device_not_turning_on",
+      "dialog_node": "node_10_1590001260467"
+    },
+    {
+      "type": "standard",
+      "title": "Greeting",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hi there, nice to see you"
+              },
+              {
+                "text": "Hello, How can I help you"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#greeting",
+      "dialog_node": "node_1_1590001109609",
+      "previous_sibling": "Welcome"
+    },
+    {
+      "type": "standard",
+      "title": "Operation issue",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "condition",
+        "dialog_node": "node_10_1590001260467"
+      },
+      "conditions": "#operation_issue",
+      "dialog_node": "node_2_1590001206458",
+      "previous_sibling": "node_1_1590001109609"
+    },
+    {
+      "type": "standard",
+      "title": "Anything else",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "I didn't understand. You can try rephrasing."
+              },
+              {
+                "text": "Can you reword your statement? I'm not understanding."
+              },
+              {
+                "text": "I didn't get your meaning."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "anything_else",
+      "dialog_node": "Anything else",
+      "previous_sibling": "node_3_1590002172759",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "thanks",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Anytime!!!"
+              },
+              {
+                "text": "It was a pleasure!!!"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#thanks",
+      "dialog_node": "node_3_1590002172759",
+      "previous_sibling": "node_2_1590001863805"
+    },
+    {
+      "type": "standard",
+      "title": "device_warranty",
+      "output": {
+        "generic": []
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "condition",
+        "dialog_node": "node_1_1590001952939"
+      },
+      "conditions": "#warranty",
+      "dialog_node": "node_2_1590001863805",
+      "previous_sibling": "node_2_1590001206458"
+    },
+    {
+      "type": "standard",
+      "title": "Welcome",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hello. How can I help you?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "welcome",
+      "dialog_node": "Welcome"
+    }
+  ],
+  "counterexamples": [],
+  "system_settings": {
+    "off_topic": {
+      "enabled": true
+    },
+    "disambiguation": {
+      "prompt": "Did you mean:",
+      "enabled": true,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "None of the above"
+    },
+    "system_entities": {
+      "enabled": true
+    },
+    "human_agent_assist": {
+      "prompt": "Did you mean:"
+    },
+    "spelling_auto_correct": true
+  },
+  "learning_opt_out": false,
+  "name": "Customer Care Chatbot",
+  "language": "en",
+  "description": ""
+}
