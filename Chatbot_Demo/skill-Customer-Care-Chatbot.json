@@ -43,8 +43,17 @@
       "description": ""
     },
     {
-      "intent": "operation_issue",
+      "intent": "device_operation",
       "examples": [
+        {
+          "text": "How to setup the wifi?"
+        },
+        {
+          "text": "How to configure wifi?"
+        },
+        {
+          "text": "How to set up the device?"
+        },
         {
           "text": "My device is not turning on"
         },
@@ -159,6 +168,13 @@
     },
     "from-sample": true
   },
+  "webhooks": [
+    {
+      "url": "https://us-south.functions.cloud.ibm.com/api/v1/web/pranay.pce17%40sot.pdpu.ac.in_dev/default/discovery.json",
+      "name": "main_webhook",
+      "headers": []
+    }
+  ],
   "dialog_nodes": [
     {
       "type": "standard",
@@ -213,6 +229,32 @@
     },
     {
       "type": "standard",
+      "title": "Device not turning on",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          },
+          {
+            "values": [
+              {
+                "text": "Make sure device is connected to the power supply properly and set up according to the user manual. If the problem persists contact again and you will be connected with the human representative."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1590001206458",
+      "conditions": "@device_not_turning_on",
+      "dialog_node": "node_10_1590001260467",
+      "previous_sibling": "response_9_1591114653433"
+    },
+    {
+      "type": "standard",
       "title": "device_not_functioning",
       "output": {
         "generic": [
@@ -264,19 +306,28 @@
       "previous_sibling": "node_10_1590001260467"
     },
     {
-      "type": "standard",
-      "title": "Device not turning on",
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "Could not find answer to your query. Would you like to talk with the human representative?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_2_1590001206458",
+      "conditions": "anything_else",
+      "dialog_node": "response_9_1591114653433",
+      "previous_sibling": "response_9_1591114651742"
+    },
+    {
+      "type": "response_condition",
       "output": {
         "generic": [
           {
-            "values": [],
-            "response_type": "text",
-            "selection_policy": "sequential"
-          },
-          {
             "values": [
               {
-                "text": "Make sure device is connected to the power supply properly and set up according to the user manual. If the problem persists contact again and you will be connected with the human representative."
+                "text": "\"<?$webhook_result_1?>\""
               }
             ],
             "response_type": "text",
@@ -285,8 +336,8 @@
         ]
       },
       "parent": "node_2_1590001206458",
-      "conditions": "@device_not_turning_on",
-      "dialog_node": "node_10_1590001260467"
+      "conditions": "$webhook_result_1",
+      "dialog_node": "response_9_1591114651742"
     },
     {
       "type": "standard",
@@ -314,12 +365,22 @@
     {
       "type": "standard",
       "title": "Operation issue",
-      "next_step": {
-        "behavior": "jump_to",
-        "selector": "condition",
-        "dialog_node": "node_10_1590001260467"
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "input": "<?input_text?>"
+          },
+          "result_variable": "webhook_result_1"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
       },
-      "conditions": "#operation_issue",
+      "conditions": "#device_operation",
       "dialog_node": "node_2_1590001206458",
       "previous_sibling": "node_1_1590001109609"
     },
