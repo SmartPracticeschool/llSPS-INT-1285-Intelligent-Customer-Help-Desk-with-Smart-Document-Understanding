@@ -1,15 +1,15 @@
 [
     {
-        "id": "b0cce529.a07978",
+        "id": "41dc855f.a0482c",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Watson Dashboard",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "901b2431.469e78",
+        "id": "3bd27bc7.f22214",
         "type": "function",
-        "z": "b0cce529.a07978",
+        "z": "41dc855f.a0482c",
         "name": "",
         "func": "msg.payload=msg.payload.input;\nreturn msg;",
         "outputs": 1,
@@ -18,36 +18,36 @@
         "y": 370.20001220703125,
         "wires": [
             [
-                "23b892ea.d1df9e",
-                "c6f2275a.6b8c18"
+                "aa82b19c.b7196",
+                "ccd9123c.1765c"
             ]
         ],
         "l": false
     },
     {
-        "id": "5d228ad2.2871f4",
+        "id": "f96c0ec.20702f",
         "type": "function",
-        "z": "b0cce529.a07978",
+        "z": "41dc855f.a0482c",
         "name": "bot",
-        "func": "var message = \"\";\n\nif(msg.payload.context.webhook_result_1){\n    for(var i in msg.payload.context.webhook_result_1.passages){\n        message = message + msg.payload.context.webhook_result_1.passages[i].passage_text + \"\\n\";\n    }\n    \n    msg.payload = message;\n}\n\nelse\nmsg.payload=msg.payload.output.text[0];\n\nreturn msg;",
+        "func": "var message = \"\";\n\nif(msg.payload.intents[0].intent == \"device_operation\"){\n    for(var i in msg.payload.context.webhook_result_1.passages){\n        message = message + msg.payload.context.webhook_result_1.passages[i].passage_text + \"\\n\";\n    }\n    \n    msg.payload = message;\n}\n\nelse\nmsg.payload=msg.payload.output.text[0];\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "x": 575,
         "y": 360,
         "wires": [
             [
-                "4287d520.39b30c",
-                "700fb68a.a0c7b8"
+                "920c034c.ff388",
+                "85678dc6.f2d36"
             ]
         ],
         "l": false
     },
     {
-        "id": "4287d520.39b30c",
+        "id": "920c034c.ff388",
         "type": "debug",
-        "z": "b0cce529.a07978",
+        "z": "41dc855f.a0482c",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -59,9 +59,9 @@
         "l": false
     },
     {
-        "id": "4ee6bea3.38f69",
+        "id": "5fd4ff85.3d109",
         "type": "inject",
-        "z": "b0cce529.a07978",
+        "z": "41dc855f.a0482c",
         "name": "",
         "topic": "hi",
         "payload": "how to setup wifi?",
@@ -74,15 +74,15 @@
         "y": 256.4000015258789,
         "wires": [
             [
-                "901b2431.469e78"
+                "3bd27bc7.f22214"
             ]
         ],
         "l": false
     },
     {
-        "id": "1a59ae2d.572db2",
+        "id": "1f1b99a6.66eb86",
         "type": "ui_form",
-        "z": "b0cce529.a07978",
+        "z": "41dc855f.a0482c",
         "name": "",
         "label": "",
         "group": "2d8b4285.8eaf4e",
@@ -109,15 +109,15 @@
         "y": 383.20001220703125,
         "wires": [
             [
-                "901b2431.469e78"
+                "3bd27bc7.f22214"
             ]
         ],
         "l": false
     },
     {
-        "id": "ac5497f2.2b05a8",
+        "id": "7ba9d477.517a8c",
         "type": "ui_text",
-        "z": "b0cce529.a07978",
+        "z": "41dc855f.a0482c",
         "order": 0,
         "width": 0,
         "height": 0,
@@ -131,9 +131,9 @@
         "l": false
     },
     {
-        "id": "23b892ea.d1df9e",
+        "id": "aa82b19c.b7196",
         "type": "watson-conversation-v1",
-        "z": "b0cce529.a07978",
+        "z": "41dc855f.a0482c",
         "name": "chatbot",
         "workspaceid": "d0bac28c-f5be-47d1-b707-c9cc76c216a4",
         "multiuser": false,
@@ -146,14 +146,15 @@
         "y": 300,
         "wires": [
             [
-                "5d228ad2.2871f4"
+                "f96c0ec.20702f",
+                "7c97ffee.819d"
             ]
         ]
     },
     {
-        "id": "c6f2275a.6b8c18",
+        "id": "ccd9123c.1765c",
         "type": "ui_text",
-        "z": "b0cce529.a07978",
+        "z": "41dc855f.a0482c",
         "group": "2d8b4285.8eaf4e",
         "order": 2,
         "width": 16,
@@ -167,9 +168,9 @@
         "wires": []
     },
     {
-        "id": "700fb68a.a0c7b8",
+        "id": "85678dc6.f2d36",
         "type": "ui_text",
-        "z": "b0cce529.a07978",
+        "z": "41dc855f.a0482c",
         "group": "2d8b4285.8eaf4e",
         "order": 4,
         "width": 0,
@@ -178,8 +179,22 @@
         "label": "Chatbot",
         "format": "{{msg.payload}}",
         "layout": "row-left",
-        "x": 650,
+        "x": 690,
         "y": 220,
+        "wires": []
+    },
+    {
+        "id": "7c97ffee.819d",
+        "type": "debug",
+        "z": "41dc855f.a0482c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 420,
+        "y": 200,
         "wires": []
     },
     {
